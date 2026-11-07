@@ -1,2 +1,7 @@
 # No external packages required
 requests==2.32.3
+    
+fastapi
+uvicorn
+pandas
+scikit-learn
