@@ -1,0 +1,7 @@
+
+drug_code,generic_name,strength,unit_size,mrp_inr,therapeutic_group
+1,"Aceclofenac 100mg and Paracetamol 325mg Tablets","100mg + 325mg","10's",9.38,Painkiller
+2,"Aceclofenac Tablets IP 100 mg","100 mg","10's",7.50,Anti-inflammatory
+3,"Pregabalin Capsules IP 75 mg","75 mg","10's",20.63,Neuropathic pain
+5,"Aspirin Gastro-resistant Tablets IP 150 mg","150 mg","14's",4.69,Antiplatelet
+6,"Chlorzoxazone 500mg, Diclofenac 50mg and Paracetamol 325mg Tablets","500mg + 50mg + 325mg","10's",23.44,Painkiller

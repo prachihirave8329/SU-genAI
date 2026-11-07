@@ -1,0 +1,42 @@
+[
+    {
+        "drug_code": "1",
+        "generic_name": "Aceclofenac 100mg and Paracetamol 325mg Tablets",
+        "strength": "100mg + 325mg",
+        "unit_size": "10's",
+        "mrp_inr": 9.38,
+        "therapeutic_group": "Painkiller"
+    },
+    {
+        "drug_code": "2",
+        "generic_name": "Aceclofenac Tablets IP 100 mg",
+        "strength": "100 mg",
+        "unit_size": "10's",
+        "mrp_inr": 7.5,
+        "therapeutic_group": "Anti-inflammatory"
+    },
+    {
+        "drug_code": "3",
+        "generic_name": "Pregabalin Capsules IP 75 mg",
+        "strength": "75 mg",
+        "unit_size": "10's",
+        "mrp_inr": 20.63,
+        "therapeutic_group": "Neuropathic pain"
+    },
+    {
+        "drug_code": "5",
+        "generic_name": "Aspirin Gastro-resistant Tablets IP 150 mg",
+        "strength": "150 mg",
+        "unit_size": "14's",
+        "mrp_inr": 4.69,
+        "therapeutic_group": "Antiplatelet"
+    },
+    {
+        "drug_code": "6",
+        "generic_name": "Chlorzoxazone 500mg, Diclofenac 50mg and Paracetamol 325mg Tablets",
+        "strength": "500mg + 50mg + 325mg",
+        "unit_size": "10's",
+        "mrp_inr": 23.44,
+        "therapeutic_group": "Painkiller"
+    }
+]
