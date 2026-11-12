@@ -22,6 +22,14 @@ def load_records():
     with open(DATA_FILE, "r", encoding="utf-8") as file:
         return json.load(file)
 
+@app.get("/")
+def home():
+    return {
+        "message": "Welcome to JanAushadhiFinder API!",
+        "docs": "/docs",
+        "health": "/health"
+    }
+
 
 # Health Check API
 @app.get("/health")
