@@ -1,0 +1,419 @@
+{
+    "evaluation": "JanAushadhiFinder Prompt Comparison",
+    "model_provider": "Configured provider from .env",
+    "total_questions": 10,
+    "version_1": [
+        {
+            "id": "Q1",
+            "question": "What is JanAushadhiFinder?",
+            "task": "general",
+            "retrieved_records": [],
+            "response": {
+                "answer": "JanAushadhiFinder is a tool that helps people look up medicines that are listed in the Jan Aushadhi database. It lets users search for a medicine by name, see its details such as strength and price, and learn more about it. The goal is to make it easier for patients and caregivers to find affordable medicines and understand what’s available.\n\nFeatures:\n- Search for medicines by name.\n- View basic information like strength and price.\n- Get quick answers about the medicine’s availability in the Jan Aushadhi scheme.\n- Simple, beginner‑friendly interface.\n\nIt does not provide medical advice, diagnose conditions, or give dosage instructions.\n\n",
+                "confidence": 0.9,
+                "follow_up": "How can I use JanAushadhiFinder to find a specific medicine?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q2",
+            "question": "Where can I find a nearby Jan Aushadhi Kendra?",
+            "task": "general",
+            "retrieved_records": [],
+            "response": {
+                "answer": "I’m sorry, but I don’t have information on the locations of Jan Aushadhi Kendras in this context.",
+                "confidence": 0.5,
+                "follow_up": "Could you tell me your city or state so I can help you find a nearby Jan Aushadhi Kendra?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q3",
+            "question": "Where can I check medicine information?",
+            "task": "general",
+            "retrieved_records": [],
+            "response": {
+                "answer": "You can find medicine information by using the JanAushadhiFinder chatbot, which searches the Jan Aushadhi dataset for details about medicines.",
+                "confidence": 0.9,
+                "follow_up": "Would you like help searching for a specific medicine?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q4",
+            "question": "What is the price of Paracetamol 500 mg?",
+            "task": "medicine",
+            "retrieved_records": [
+                {
+                    "drug_code": "2",
+                    "generic_name": "Aceclofenac Tablets IP 100 mg",
+                    "strength": "100 mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 7.5,
+                    "therapeutic_group": "Anti-inflammatory",
+                    "similarity_score": 0.2771
+                },
+                {
+                    "drug_code": "3",
+                    "generic_name": "Pregabalin Capsules IP 75 mg",
+                    "strength": "75 mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 20.63,
+                    "therapeutic_group": "Neuropathic pain",
+                    "similarity_score": 0.2633
+                },
+                {
+                    "drug_code": "5",
+                    "generic_name": "Aspirin Gastro-resistant Tablets IP 150 mg",
+                    "strength": "150 mg",
+                    "unit_size": "14's",
+                    "mrp_inr": 4.69,
+                    "therapeutic_group": "Antiplatelet",
+                    "similarity_score": 0.2516
+                }
+            ],
+            "response": {
+                "answer": "I’m sorry, but the dataset does not contain any record for Paracetamol 500 mg, so I don’t have price information for it.",
+                "confidence": 0.1,
+                "follow_up": "Would you like to search for another medicine by name, generic name, or drug code?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q5",
+            "question": "What is the strength and unit size of Paracetamol?",
+            "task": "medicine",
+            "retrieved_records": [
+                {
+                    "drug_code": "1",
+                    "generic_name": "Aceclofenac 100mg and Paracetamol 325mg Tablets",
+                    "strength": "100mg + 325mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 9.38,
+                    "therapeutic_group": "Painkiller",
+                    "similarity_score": 0.3637
+                },
+                {
+                    "drug_code": "6",
+                    "generic_name": "Chlorzoxazone 500mg, Diclofenac 50mg and Paracetamol 325mg Tablets",
+                    "strength": "500mg + 50mg + 325mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 23.44,
+                    "therapeutic_group": "Painkiller",
+                    "similarity_score": 0.2927
+                }
+            ],
+            "response": {
+                "answer": "Paracetamol is listed in two records:\n1. Aceclofenac 100mg + Paracetamol 325mg Tablets – strength 325 mg, unit size 10 tablets.\n2. Chlorzoxazone 500mg + Diclofenac 50mg + Paracetamol 325mg Tablets – strength 325 mg, unit size 10 tablets.\nSo the strength of Paracetamol in these products is 325 mg and the unit size is 10 tablets.\n",
+                "confidence": 0.95,
+                "follow_up": "Would you like to know more about any of these products or search for another medicine?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q6",
+            "question": "Is Paracetamol 500 mg currently available in stock at my nearest Jan Aushadhi Kendra?",
+            "task": "general",
+            "retrieved_records": [],
+            "response": {
+                "answer": "I’m sorry, I don’t have information about the current stock at your nearest Jan Aushadhi Kendra.",
+                "confidence": 0.2,
+                "follow_up": "Would you like help finding a Jan Aushadhi Kendra near you?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q7",
+            "question": "What is the drug code of Paracetamol?",
+            "task": "medicine",
+            "retrieved_records": [
+                {
+                    "drug_code": "1",
+                    "generic_name": "Aceclofenac 100mg and Paracetamol 325mg Tablets",
+                    "strength": "100mg + 325mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 9.38,
+                    "therapeutic_group": "Painkiller",
+                    "similarity_score": 0.2572
+                },
+                {
+                    "drug_code": "6",
+                    "generic_name": "Chlorzoxazone 500mg, Diclofenac 50mg and Paracetamol 325mg Tablets",
+                    "strength": "500mg + 50mg + 325mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 23.44,
+                    "therapeutic_group": "Painkiller",
+                    "similarity_score": 0.207
+                }
+            ],
+            "response": {
+                "answer": "Paracetamol is present in the following drug codes in the dataset:\n- Drug code 1: Aceclofenac 100mg and Paracetamol 325mg Tablets\n- Drug code 6: Chlorzoxazone 500mg, Diclofenac 50mg and Paracetamol 325mg Tablets",
+                "confidence": 0.95,
+                "follow_up": "Would you like more information about either of these medicines or help with another query?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q8",
+            "question": "Which medicines belong to the Painkiller therapeutic group?",
+            "task": "medicine",
+            "retrieved_records": [
+                {
+                    "drug_code": "1",
+                    "generic_name": "Aceclofenac 100mg and Paracetamol 325mg Tablets",
+                    "strength": "100mg + 325mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 9.38,
+                    "therapeutic_group": "Painkiller",
+                    "similarity_score": 0.2572
+                },
+                {
+                    "drug_code": "6",
+                    "generic_name": "Chlorzoxazone 500mg, Diclofenac 50mg and Paracetamol 325mg Tablets",
+                    "strength": "500mg + 50mg + 325mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 23.44,
+                    "therapeutic_group": "Painkiller",
+                    "similarity_score": 0.207
+                }
+            ],
+            "response": {
+                "answer": "The following medicines in the dataset belong to the Painkiller therapeutic group:\n1. Aceclofenac 100mg and Paracetamol 325mg Tablets\n2. Chlorzoxazone 500mg, Diclofenac 50mg and Paracetamol 325mg Tablets",
+                "confidence": 1.0,
+                "follow_up": "Would you like more details about any of these medicines, such as their strengths, unit sizes, or prices?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q9",
+            "question": "How much does a particular generic medicine cost?",
+            "task": "medicine",
+            "retrieved_records": [],
+            "response": {
+                "answer": "I’m sorry, but I don’t have any price information for that medicine in the dataset. Would you like to search using a medicine name, generic name, or drug code?",
+                "confidence": 0.1,
+                "follow_up": "Would you like to search by medicine name, generic name, or drug code?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q10",
+            "question": "Can I search for a medicine using its generic name?",
+            "task": "medicine",
+            "retrieved_records": [],
+            "response": {
+                "answer": "Yes, you can search for a medicine using its generic name. Would you like to proceed with a search by generic name, or would you prefer to use a medicine name or drug code instead?",
+                "confidence": 0.9,
+                "follow_up": "Which type of search would you like to try next: generic name, medicine name, or drug code?"
+            },
+            "status": "success"
+        }
+    ],
+    "version_2": [
+        {
+            "id": "Q1",
+            "question": "What is JanAushadhiFinder?",
+            "task": "general",
+            "retrieved_records": [],
+            "response": {
+                "answer": "JanAushadhiFinder is a tool that helps people look up medicines that are listed in the Jan Aushadhi database. It lets users search for a medicine by name, see its details such as brand, strength, and price, and learn more about it. The system uses a chatbot interface so you can ask questions in plain language and get clear answers. It is designed to make it easier for patients and caregivers to find affordable medicines and understand what is available.",
+                "confidence": 0.9,
+                "follow_up": "How can I use JanAushadhiFinder to find a specific medicine?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q2",
+            "question": "Where can I find a nearby Jan Aushadhi Kendra?",
+            "task": "general",
+            "retrieved_records": [],
+            "response": {
+                "answer": "I’m sorry, but I don’t have information on the locations of Jan Aushadhi Kendras.",
+                "confidence": 0.2,
+                "follow_up": "Would you like help finding a pharmacy or other resources in your area?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q3",
+            "question": "Where can I check medicine information?",
+            "task": "general",
+            "retrieved_records": [],
+            "response": {
+                "answer": "You can check medicine information through the JanAushadhiFinder chatbot, which is available on the project’s website or mobile app. Just type the medicine name or code, and the chatbot will give you details from the Jan Aushadhi dataset.",
+                "confidence": 0.9,
+                "follow_up": "Would you like help searching for a specific medicine?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q4",
+            "question": "What is the price of Paracetamol 500 mg?",
+            "task": "medicine",
+            "retrieved_records": [
+                {
+                    "drug_code": "2",
+                    "generic_name": "Aceclofenac Tablets IP 100 mg",
+                    "strength": "100 mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 7.5,
+                    "therapeutic_group": "Anti-inflammatory",
+                    "similarity_score": 0.2771
+                },
+                {
+                    "drug_code": "3",
+                    "generic_name": "Pregabalin Capsules IP 75 mg",
+                    "strength": "75 mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 20.63,
+                    "therapeutic_group": "Neuropathic pain",
+                    "similarity_score": 0.2633
+                },
+                {
+                    "drug_code": "5",
+                    "generic_name": "Aspirin Gastro-resistant Tablets IP 150 mg",
+                    "strength": "150 mg",
+                    "unit_size": "14's",
+                    "mrp_inr": 4.69,
+                    "therapeutic_group": "Antiplatelet",
+                    "similarity_score": 0.2516
+                }
+            ],
+            "response": {
+                "answer": "I’m sorry, but the dataset does not contain any record for Paracetamol 500 mg.",
+                "confidence": 0.1,
+                "follow_up": "Would you like to search for a medicine using its name, generic name, or drug code?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q5",
+            "question": "What is the strength and unit size of Paracetamol?",
+            "task": "medicine",
+            "retrieved_records": [
+                {
+                    "drug_code": "1",
+                    "generic_name": "Aceclofenac 100mg and Paracetamol 325mg Tablets",
+                    "strength": "100mg + 325mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 9.38,
+                    "therapeutic_group": "Painkiller",
+                    "similarity_score": 0.3637
+                },
+                {
+                    "drug_code": "6",
+                    "generic_name": "Chlorzoxazone 500mg, Diclofenac 50mg and Paracetamol 325mg Tablets",
+                    "strength": "500mg + 50mg + 325mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 23.44,
+                    "therapeutic_group": "Painkiller",
+                    "similarity_score": 0.2927
+                }
+            ],
+            "response": {
+                "answer": "Based on the records, Paracetamol is present in both medicines at a strength of 325 mg per tablet. The unit size for each of these medicines is 10 tablets (10's).",
+                "confidence": 0.95,
+                "follow_up": "Would you like to know more details about either of these medicines, such as their drug codes or prices?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q6",
+            "question": "Is Paracetamol 500 mg currently available in stock at my nearest Jan Aushadhi Kendra?",
+            "task": "general",
+            "retrieved_records": [],
+            "response": {
+                "answer": "I don't have information about the current stock of Paracetamol 500 mg at your nearest Jan Aushadhi Kendra.",
+                "confidence": 0.3,
+                "follow_up": "Would you like help finding a Jan Aushadhi Kendra near you?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q7",
+            "question": "What is the drug code of Paracetamol?",
+            "task": "medicine",
+            "retrieved_records": [
+                {
+                    "drug_code": "1",
+                    "generic_name": "Aceclofenac 100mg and Paracetamol 325mg Tablets",
+                    "strength": "100mg + 325mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 9.38,
+                    "therapeutic_group": "Painkiller",
+                    "similarity_score": 0.2572
+                },
+                {
+                    "drug_code": "6",
+                    "generic_name": "Chlorzoxazone 500mg, Diclofenac 50mg and Paracetamol 325mg Tablets",
+                    "strength": "500mg + 50mg + 325mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 23.44,
+                    "therapeutic_group": "Painkiller",
+                    "similarity_score": 0.207
+                }
+            ],
+            "response": {
+                "answer": "The dataset does not contain a record for Paracetamol alone. Paracetamol appears in combination with other drugs in the dataset with drug codes 1 and 6.",
+                "confidence": 0.6,
+                "follow_up": "Would you like to search using a medicine name, generic name, or drug code?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q8",
+            "question": "Which medicines belong to the Painkiller therapeutic group?",
+            "task": "medicine",
+            "retrieved_records": [
+                {
+                    "drug_code": "1",
+                    "generic_name": "Aceclofenac 100mg and Paracetamol 325mg Tablets",
+                    "strength": "100mg + 325mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 9.38,
+                    "therapeutic_group": "Painkiller",
+                    "similarity_score": 0.2572
+                },
+                {
+                    "drug_code": "6",
+                    "generic_name": "Chlorzoxazone 500mg, Diclofenac 50mg and Paracetamol 325mg Tablets",
+                    "strength": "500mg + 50mg + 325mg",
+                    "unit_size": "10's",
+                    "mrp_inr": 23.44,
+                    "therapeutic_group": "Painkiller",
+                    "similarity_score": 0.207
+                }
+            ],
+            "response": {
+                "answer": "The following medicines in the dataset belong to the Painkiller therapeutic group:\n1. Aceclofenac 100mg and Paracetamol 325mg Tablets (drug code 1)\n2. Chlorzoxazone 500mg, Diclofenac 50mg and Paracetamol 325mg Tablets (drug code 6)",
+                "confidence": 1.0,
+                "follow_up": "Would you like more details about any of these medicines, such as strength, unit size, or price?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q9",
+            "question": "How much does a particular generic medicine cost?",
+            "task": "medicine",
+            "retrieved_records": [],
+            "response": {
+                "answer": "I’m sorry, but I don’t have any records for that medicine in the dataset.",
+                "confidence": 0.1,
+                "follow_up": "Would you like to search using a specific medicine name, generic name, or drug code?"
+            },
+            "status": "success"
+        },
+        {
+            "id": "Q10",
+            "question": "Can I search for a medicine using its generic name?",
+            "task": "medicine",
+            "retrieved_records": [],
+            "response": {
+                "answer": "Yes, you can search for a medicine using its generic name. Just let me know the generic name you have in mind, and I’ll look it up in the Jan Aushadhi dataset for you.",
+                "confidence": 0.95,
+                "follow_up": "Which generic name would you like to search for?"
+            },
+            "status": "success"
+        }
+    ]
+}
