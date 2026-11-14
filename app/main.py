@@ -1,6 +1,7 @@
 
 import json
 from pathlib import Path
+from app.vectorstore import semantic_search
 
 from fastapi import FastAPI, Query, HTTPException
 
@@ -76,6 +77,43 @@ def search_medicines(q: str = Query(..., min_length=1)):
         "total_results": len(results),
         "results": results
     }
+@app.get("/search/semantic")
+def semantic_search_api(
+    q: str = Query(..., min_length=1)
+):
+    try:
+        results = semantic_search(q, n_results=3)
+
+        ids = results["ids"][0]
+        documents = results["documents"][0]
+        metadatas = results["metadatas"][0]
+        distances = results["distances"][0]
+
+        search_results = []
+
+        for i in range(len(ids)):
+            search_results.append({
+                "id": ids[i],
+                "text": documents[i],
+                "source": metadatas[i]["source"],
+                "page": metadatas[i]["page"],
+                "title": metadatas[i]["title"],
+                "distance": distances[i]
+            })
+
+        return {
+            "query": q,
+            "total_results": len(search_results),
+            "results": search_results
+        }
+
+    except Exception as error:
+        print(f"SEMANTIC SEARCH ERROR: {error}")
+
+        raise HTTPException(
+            status_code=500,
+            detail="Semantic search failed."
+        )
 
 
 @app.post("/questions")
