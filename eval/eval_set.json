@@ -1,0 +1,78 @@
+
+[
+  {
+    "id": "Q1",
+    "question": "What is Pradhan Mantri Bhartiya Janaushadhi Pariyojana?",
+    "expected_behavior": "answer_from_context"
+  },
+  {
+    "id": "Q2",
+    "question": "What is a generic medicine?",
+    "expected_behavior": "answer_from_context"
+  },
+  {
+    "id": "Q3",
+    "question": "What does PMBI stand for?",
+    "expected_behavior": "answer_from_context"
+  },
+  {
+    "id": "Q4",
+    "question": "How is the quality of Jan Aushadhi medicines ensured?",
+    "expected_behavior": "answer_from_context"
+  },
+  {
+    "id": "Q5",
+    "question": "Are generic medicines as effective as branded medicines?",
+    "expected_behavior": "answer_from_context"
+  },
+  {
+    "id": "Q6",
+    "question": "Is Paracetamol 500 mg currently available in stock at my nearest Jan Aushadhi Kendra?",
+    "expected_behavior": "abstain"
+  },
+  {
+    "id": "Q7",
+    "question": "How can I find the location of a nearby Jan Aushadhi Kendra?",
+    "expected_behavior": "answer_from_context"
+  },
+  {
+    "id": "Q8",
+    "question": "What are the normal working hours of a Jan Aushadhi Kendra?",
+    "expected_behavior": "answer_from_context"
+  },
+  {
+    "id": "Q9",
+    "question": "How are medicines procured and supplied to Jan Aushadhi Kendras?",
+    "expected_behavior": "answer_from_context"
+  },
+  {
+    "id": "Q10",
+    "question": "What is the toll-free contact number for Jan Aushadhi?",
+    "expected_behavior": "answer_from_context"
+  },
+  {
+    "id": "Q11",
+    "question": "How many Jan Aushadhi Kendras are currently functional according to the FAQ?",
+    "expected_behavior": "answer_from_context"
+  },
+  {
+    "id": "Q12",
+    "question": "Where can I check the list of medicines and their MRP?",
+    "expected_behavior": "answer_from_context"
+  },
+  {
+    "id": "Q13",
+    "question": "Who can apply to open a Jan Aushadhi Kendra?",
+    "expected_behavior": "answer_from_context"
+  },
+  {
+    "id": "Q14",
+    "question": "What normal margin is provided to the operating agency on medicine sales?",
+    "expected_behavior": "answer_from_context"
+  },
+  {
+    "id": "Q15",
+    "question": "Can you tell me the exact current stock of medicines at a particular Jan Aushadhi Kendra?",
+    "expected_behavior": "abstain"
+  }
+]

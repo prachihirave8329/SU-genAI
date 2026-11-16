@@ -107,9 +107,8 @@ def load_documents():
     return documents
 
 
-def chunk_documents():
-    """Load documents and split them into chunks."""
 
+def chunk_documents(chunk_size=500, overlap=50):
     documents = load_documents()
     all_chunks = []
 
@@ -118,12 +117,15 @@ def chunk_documents():
             text=document["text"],
             source=document["source"],
             page=document["page"],
-            title=document["title"]
+            title=document["title"],
+            chunk_size=chunk_size,
+            overlap=overlap
         )
 
         all_chunks.extend(chunks)
 
     return all_chunks
+
 
 
 if __name__ == "__main__":

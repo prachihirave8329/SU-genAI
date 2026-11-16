@@ -117,3 +117,40 @@ python analysis/explore.py
 ## Note
 
 This project provides information only. It does not prescribe medicines or recommend substitutions. Search results are based on text similarity and should not be treated as medical advice.
+
+
+## RAG Evaluation – Day 8
+
+### Evaluation Dataset
+- Total questions: 15
+- Answerable questions: 13
+- Abstention questions: 2
+- Evaluation method: Compare retrieval configurations using the same question set.
+
+### Configuration Comparison
+
+| Parameter | Config A | Config B |
+|---|---:|---:|
+| Chunk Size | 500 | 300 |
+| Chunk Overlap | 50 | 50 |
+| Top K | 3 | 5 |
+| Accuracy | 66.67% | 86.67% |
+| Abstention Accuracy | 100% | 100% |
+
+### Evaluation Results
+
+Config B achieved the highest accuracy of 86.67%, compared with 66.67% for Config A.
+
+Config B correctly answered 13 out of 15 questions and correctly abstained on both questions requiring unavailable real-time stock information.
+
+### Conclusion
+
+Config B was selected as the better-performing configuration in this evaluation.
+
+Smaller chunks and a higher retrieval count provided more relevant context for answering questions. Since both chunk size and Top K changed together, further controlled experiments are needed to measure their individual effects.
+
+### Evaluation Output
+
+Results are saved in:
+
+`eval/rag_eval_results.json`

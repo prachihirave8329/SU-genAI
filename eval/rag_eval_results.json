@@ -1,0 +1,424 @@
+{
+    "evaluation": "RAG Configuration Comparison",
+    "results": [
+        {
+            "config": "Config A",
+            "chunk_collection": "jan_aushadhi_config_a",
+            "top_k": 3,
+            "total_questions": 15,
+            "correct_answers": 10,
+            "accuracy_percent": 66.67,
+            "abstention_accuracy_percent": 100.0,
+            "details": [
+                {
+                    "id": "Q1",
+                    "question": "What is Pradhan Mantri Bhartiya Janaushadhi Pariyojana?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "Pradhan Mantri Bhartiya Janaushadhi Pariyojana (PMBJP) is a campaign launched by the Department of Pharmaceuticals in association with Central Pharma Public Sector Undertakings to provide quality medicines at affordable prices to the masses through dedicated outlets called ‘Pradhan Mantri Bhartiya Janaushadhi Kendra’.",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_1",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q2",
+                    "question": "What is a generic medicine?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "I don't know.",
+                    "citations": [],
+                    "correct": false
+                },
+                {
+                    "id": "Q3",
+                    "question": "What does PMBI stand for?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "Pharmaceuticals & Medical Devices Bureau of India",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_0",
+                            "source": "about_pmbi.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        },
+                        {
+                            "chunk_id": "chunk_1",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q4",
+                    "question": "How is the quality of Jan Aushadhi medicines ensured?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "I don't know.",
+                    "citations": [],
+                    "correct": false
+                },
+                {
+                    "id": "Q5",
+                    "question": "Are generic medicines as effective as branded medicines?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "I don't know.",
+                    "citations": [],
+                    "correct": false
+                },
+                {
+                    "id": "Q6",
+                    "question": "Is Paracetamol 500 mg currently available in stock at my nearest Jan Aushadhi Kendra?",
+                    "expected_behavior": "abstain",
+                    "answer": "I don't know.",
+                    "citations": [],
+                    "correct": true
+                },
+                {
+                    "id": "Q7",
+                    "question": "How can I find the location of a nearby Jan Aushadhi Kendra?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "Visit the PMBI website and look under the heading “PMBJP => PMBJP Kendra” for a state‑wise/district‑wise list of Pradhan Mantri Janaushadhi Kendras.",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_2",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q8",
+                    "question": "What are the normal working hours of a Jan Aushadhi Kendra?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "8 AM to 8 PM",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_2",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q9",
+                    "question": "How are medicines procured and supplied to Jan Aushadhi Kendras?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "Medicines are procured through an open tender system from private manufacturers and CPSUs, tested by empanelled NABL laboratories, and then sent to the Kendras via a distribution network.",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_2",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q10",
+                    "question": "What is the toll-free contact number for Jan Aushadhi?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "I don't know.",
+                    "citations": [],
+                    "correct": false
+                },
+                {
+                    "id": "Q11",
+                    "question": "How many Jan Aushadhi Kendras are currently functional according to the FAQ?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "More than 13000",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_2",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q12",
+                    "question": "Where can I check the list of medicines and their MRP?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "You can check the list of medicines and their MRP on the PMBI website’s Product & MRP List page or in the product list PDF.",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_4",
+                            "source": "product_list.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        },
+                        {
+                            "chunk_id": "chunk_5",
+                            "source": "product_list.pdf",
+                            "page": 1,
+                            "title": "Product List"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q13",
+                    "question": "Who can apply to open a Jan Aushadhi Kendra?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "Individual entrepreneur, proprietor partnership, charitable institute/hospital, NGO, trust, society, government, government nominated agency, or any other entity can apply to open a Jan Aushadhi Kendra.",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_2",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q14",
+                    "question": "What normal margin is provided to the operating agency on medicine sales?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "I don't know.",
+                    "citations": [],
+                    "correct": false
+                },
+                {
+                    "id": "Q15",
+                    "question": "Can you tell me the exact current stock of medicines at a particular Jan Aushadhi Kendra?",
+                    "expected_behavior": "abstain",
+                    "answer": "I don't know.",
+                    "citations": [],
+                    "correct": true
+                }
+            ]
+        },
+        {
+            "config": "Config B",
+            "chunk_collection": "jan_aushadhi_config_b",
+            "top_k": 5,
+            "total_questions": 15,
+            "correct_answers": 13,
+            "accuracy_percent": 86.67,
+            "abstention_accuracy_percent": 100.0,
+            "details": [
+                {
+                    "id": "Q1",
+                    "question": "What is Pradhan Mantri Bhartiya Janaushadhi Pariyojana?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "Pradhan Mantri Bhartiya Janaushadhi Pariyojana (PMBJP) is a campaign launched by the Department of Pharmaceuticals in association with Central Pharma Public Sector Undertakings to provide quality medicines at affordable prices to the masses through dedicated outlets called ‘Pradhan Mantri Bhartiya Janaushadhi Kendra’. These outlets offer generic medicines at much lower prices, with potency equal to branded medicines.",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_1",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q2",
+                    "question": "What is a generic medicine?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "A generic medicine is a drug that has the same efficacy and therapeutic value as a branded medicine.",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_2",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q3",
+                    "question": "What does PMBI stand for?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "Pharmaceuticals & Medical Devices Bureau of India",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_1",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        },
+                        {
+                            "chunk_id": "chunk_0",
+                            "source": "about_pmbi.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q4",
+                    "question": "How is the quality of Jan Aushadhi medicines ensured?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "The quality, safety and efficacy of Jan Aushadhi medicines are ensured by testing each batch of medicines—procured from CPSUs and private suppliers—at NABL‑approved laboratories and confirming they meet required standards before they are supplied to the Pradhan Mantri Bharatiya Janaushadhi Kendras.",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_2",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q5",
+                    "question": "Are generic medicines as effective as branded medicines?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "Yes, generic medicines have the same efficacy and therapeutic value as branded medicines.",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_2",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q6",
+                    "question": "Is Paracetamol 500 mg currently available in stock at my nearest Jan Aushadhi Kendra?",
+                    "expected_behavior": "abstain",
+                    "answer": "I don't know.",
+                    "citations": [],
+                    "correct": true
+                },
+                {
+                    "id": "Q7",
+                    "question": "How can I find the location of a nearby Jan Aushadhi Kendra?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "Visit the PMBI website and look under the \"PMBJP => PMBJP Kendra\" section, which lists state‑wise and district‑wise locations of all functional Jan Aushadhi Kendras.",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_2",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q8",
+                    "question": "What are the normal working hours of a Jan Aushadhi Kendra?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "8 AM to 8 PM",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_3",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q9",
+                    "question": "How are medicines procured and supplied to Jan Aushadhi Kendras?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "Medicines are procured through an open‑tender system from private manufacturers and CPSUs. Each batch is tested by NABL‑approved laboratories and then supplied to the Jan Aushadhi Kendras via the distribution network from the PMBI warehouse.",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_2",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        },
+                        {
+                            "chunk_id": "chunk_3",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q10",
+                    "question": "What is the toll-free contact number for Jan Aushadhi?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "I don't know.",
+                    "citations": [],
+                    "correct": false
+                },
+                {
+                    "id": "Q11",
+                    "question": "How many Jan Aushadhi Kendras are currently functional according to the FAQ?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "I don't know.",
+                    "citations": [],
+                    "correct": false
+                },
+                {
+                    "id": "Q12",
+                    "question": "Where can I check the list of medicines and their MRP?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "On the PMBI website, under the heading “PMBJP Products- Therapeutic groups.”",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_2",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q13",
+                    "question": "Who can apply to open a Jan Aushadhi Kendra?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "Individual entrepreneurs, proprietors, partnerships, charitable institutes/hospitals, NGOs, trusts, societies, government entities, government‑nominated agencies, or any other entity can apply to open a Jan Aushadhi Kendra.",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_3",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q14",
+                    "question": "What normal margin is provided to the operating agency on medicine sales?",
+                    "expected_behavior": "answer_from_context",
+                    "answer": "20% margin on MRP (excluding taxes)",
+                    "citations": [
+                        {
+                            "chunk_id": "chunk_3",
+                            "source": "faq.html",
+                            "page": 1,
+                            "title": "Pharmaceuticals & Medical Devices Bureau of India"
+                        }
+                    ],
+                    "correct": true
+                },
+                {
+                    "id": "Q15",
+                    "question": "Can you tell me the exact current stock of medicines at a particular Jan Aushadhi Kendra?",
+                    "expected_behavior": "abstain",
+                    "answer": "I don't know.",
+                    "citations": [],
+                    "correct": true
+                }
+            ]
+        }
+    ]
+}

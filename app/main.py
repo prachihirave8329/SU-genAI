@@ -8,7 +8,8 @@ from fastapi import FastAPI, Query, HTTPException
 from app.smart_search import search_records
 from app.schema import ChatRequest, ChatResponse
 from app.services import generate_chat_answer
-
+from app.rag import ask_question as rag_ask_question
+from app.schema import AskRequest
 
 app = FastAPI(
     title="JanAushadhiFinder API",
@@ -185,3 +186,22 @@ def chat(request: ChatRequest):
         status_code=502,
         detail="LLM provider request failed. Check server terminal."
     )
+@app.post("/ask")
+def ask_rag(request: AskRequest):
+    try:
+        result = rag_ask_question(
+            request.question,
+            top_k=5,
+            collection_name="jan_aushadhi_config_b"
+        )
+        return result
+
+    except ValueError as error:
+        raise HTTPException(status_code=502, detail=str(error))
+
+    except Exception as error:
+        print(f"RAG ERROR: {type(error).__name__}: {error}")
+        raise HTTPException(
+            status_code=502,
+            detail="RAG question processing failed."
+        )

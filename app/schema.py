@@ -24,4 +24,13 @@ class ChatResponse(BaseModel):
         le=1
     )
 
+
     follow_up: str
+
+class AskRequest(BaseModel):
+    question: str = Field(
+        ...,
+        min_length=1,
+        max_length=10000,
+        description="Question asked by the user"
+    )
