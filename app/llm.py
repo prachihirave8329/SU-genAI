@@ -11,6 +11,7 @@ def generate_response(system_prompt: str, user_prompt: str) -> str:
     Generate an LLM response using the configured provider.
 
     Supported providers: groq, gemini
+    
     """
 
     provider = os.getenv("LLM_PROVIDER", "groq").lower()

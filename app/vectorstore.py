@@ -76,21 +76,19 @@ def index_chunks(
     return collection
 
 
-def semantic_search(
-    query,
-    n_results=3,
-    collection_name=COLLECTION_NAME
-):
-    """Search documents in the selected collection."""
+
+def semantic_search(query, n_results=5, collection_name=COLLECTION_NAME):
 
     collection = get_collection(collection_name)
 
+    # Search using the user's question
     results = collection.query(
         query_texts=[query],
         n_results=n_results
     )
 
     return results
+
 
 
 if __name__ == "__main__":
