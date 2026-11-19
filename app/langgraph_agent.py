@@ -2,12 +2,12 @@
 import json
 from typing import TypedDict
 
-from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import InMemorySaver
-from langgraph.types import interrupt, Command
+from langgraph.graph import END, START, StateGraph
+from langgraph.types import Command, interrupt
 
-from app.vectorstore import semantic_search
 from app.llm import generate_response
+from app.vectorstore import semantic_search
 
 
 # 1. Define the graph state
@@ -215,6 +215,6 @@ if __name__ == "__main__":
 
             print("\nAgent:", result["answer"])
 
-        except Exception as error:
+        except Exception as error:  # noqa: BLE001
 
             print("\nError:", error)

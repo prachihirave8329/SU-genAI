@@ -1,7 +1,7 @@
 
 from pathlib import Path
-import requests
 
+import requests
 
 # Project's raw data folder
 RAW_DIR = Path(__file__).resolve().parent.parent / "data" / "raw"

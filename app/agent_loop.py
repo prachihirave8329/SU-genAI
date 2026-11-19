@@ -2,8 +2,8 @@
 import json
 
 from app.llm import generate_response
-from app.vectorstore import semantic_search
 from app.tools import monthly_savings_calculator
+from app.vectorstore import semantic_search
 
 
 # Step 1: LLM selects a tool

@@ -4,7 +4,6 @@ from pathlib import Path
 
 from app.llm import generate_response
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROMPTS_DIR = BASE_DIR / "prompts"
 
@@ -14,6 +13,7 @@ def load_prompt(filename: str) -> str:
 
     with open(prompt_path, "r", encoding="utf-8") as file:
         return file.read()
+
 
 def generate_chat_answer(
     question: str,
@@ -58,7 +58,7 @@ def generate_chat_answer(
 
     # Validate the response structure
     if not isinstance(result, dict):
-        raise ValueError("LLM response must be a JSON object")
+        raise TypeError("LLM response must be a JSON object")
 
     answer = result.get("answer")
     confidence = result.get("confidence")
@@ -75,7 +75,7 @@ def generate_chat_answer(
         raise ValueError("Invalid confidence returned by LLM")
 
     if not isinstance(follow_up, str):
-        raise ValueError("Invalid follow_up returned by LLM")
+        raise TypeError("Invalid follow_up returned by LLM")
 
     return {
         "answer": answer,

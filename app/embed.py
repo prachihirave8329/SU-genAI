@@ -1,9 +1,9 @@
 
-import chromadb
 from pathlib import Path
 
-from app.chunking import chunk_documents
+import chromadb
 
+from app.chunking import chunk_documents
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 EVAL_DIR = BASE_DIR / "eval"

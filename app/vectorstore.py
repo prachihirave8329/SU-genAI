@@ -1,9 +1,9 @@
 
 from pathlib import Path
+
 import chromadb
 
 from app.chunking import chunk_documents
-
 
 # Project directory
 BASE_DIR = Path(__file__).resolve().parent.parent

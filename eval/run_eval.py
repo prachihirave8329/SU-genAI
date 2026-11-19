@@ -4,7 +4,6 @@ from pathlib import Path
 
 from app.rag import ask_question
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 EVAL_FILE = BASE_DIR / "eval" / "eval_set.json"
 RESULT_FILE = BASE_DIR / "eval" / "rag_eval_results.json"
@@ -75,7 +74,7 @@ def evaluate_config(config, questions):
             print("Citations:", len(citations))
             print("Correct:", is_correct)
 
-        except Exception as error:
+        except Exception as error:  # noqa: BLE001
             print("Error:", str(error))
 
             results.append({

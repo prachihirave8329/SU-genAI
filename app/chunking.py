@@ -1,8 +1,8 @@
 
 from pathlib import Path
+
 from bs4 import BeautifulSoup
 from pypdf import PdfReader
-
 
 # Project folders
 BASE_DIR = Path(__file__).resolve().parent.parent

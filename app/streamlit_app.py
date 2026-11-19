@@ -1,7 +1,8 @@
 
-import streamlit as st
-import requests
 import uuid
+
+import requests
+import streamlit as st
 
 st.title("Jan Aushadhi AI Assistant")
 

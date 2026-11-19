@@ -1,22 +1,20 @@
 
 import json
 from pathlib import Path
-from app.vectorstore import semantic_search
 
-from fastapi import FastAPI, Query, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 
-from app.smart_search import search_records
-from app.schema import ChatRequest, ChatResponse
-from app.services import generate_chat_answer
 from app.rag import ask_question as rag_ask_question
-from app.schema import AskRequest
+from app.schema import AskRequest, ChatRequest, ChatResponse
+from app.services import generate_chat_answer
+from app.smart_search import search_records
+from app.vectorstore import semantic_search
 
 app = FastAPI(
     title="JanAushadhiFinder API",
     description="API for exploring and searching Jan Aushadhi medicines.",
     version="2.0.0"
 )
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_FILE = BASE_DIR / "data" / "records.json"
@@ -78,10 +76,10 @@ def search_medicines(q: str = Query(..., min_length=1)):
         "total_results": len(results),
         "results": results
     }
+
+
 @app.get("/search/semantic")
-def semantic_search_api(
-    q: str = Query(..., min_length=1)
-):
+def semantic_search_api(q: str = Query(..., min_length=1)):
     try:
         results = semantic_search(q, n_results=3)
 
@@ -108,7 +106,7 @@ def semantic_search_api(
             "results": search_results
         }
 
-    except Exception as error:
+    except Exception as error:  # noqa: BLE001
         print(f"SEMANTIC SEARCH ERROR: {error}")
 
         raise HTTPException(
@@ -138,17 +136,14 @@ def ask_question(request: ChatRequest):
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
-
     try:
         records = load_records()
 
-        # Retrieve relevant records only for medicine queries
         if request.task == "medicine":
             matching_records = search_records(
                 request.question,
                 records
             )
-
             context_records = matching_records[:3]
 
         elif request.task == "general":
@@ -177,15 +172,17 @@ def chat(request: ChatRequest):
             detail=str(error)
         )
 
-    except Exception as error:
-            print(
-        f"LLM ERROR: {type(error).__name__}: {error}"
-    )
+    except Exception as error:  # noqa: BLE001
+        print(
+            f"LLM ERROR: {type(error).__name__}: {error}"
+        )
 
-    raise HTTPException(
-        status_code=502,
-        detail="LLM provider request failed. Check server terminal."
-    )
+        raise HTTPException(
+            status_code=502,
+            detail="LLM provider request failed. Check server terminal."
+        )
+
+
 @app.post("/ask")
 def ask_rag(request: AskRequest):
     try:
@@ -199,7 +196,7 @@ def ask_rag(request: AskRequest):
     except ValueError as error:
         raise HTTPException(status_code=502, detail=str(error))
 
-    except Exception as error:
+    except Exception as error:  # noqa: BLE001
         print(f"RAG ERROR: {type(error).__name__}: {error}")
         raise HTTPException(
             status_code=502,

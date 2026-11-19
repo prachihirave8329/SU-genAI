@@ -1,9 +1,8 @@
 
 import json
 
-from app.vectorstore import semantic_search
 from app.llm import generate_response
-
+from app.vectorstore import semantic_search
 
 SYSTEM_PROMPT = """
 You are JanAushadhiFinder, an evidence-grounded assistant.
@@ -143,8 +142,7 @@ and return an empty supporting_chunk_ids list.
         raise ValueError("LLM returned invalid JSON.")
 
     if not isinstance(parsed_response, dict):
-        raise ValueError("LLM response must be a JSON object.")
-
+        raise TypeError("LLM response must be a JSON object.")
     answer = parsed_response.get("answer")
     supporting_ids = parsed_response.get("supporting_chunk_ids")
 
@@ -152,8 +150,7 @@ and return an empty supporting_chunk_ids list.
         raise ValueError("LLM returned an invalid answer.")
 
     if not isinstance(supporting_ids, list):
-        raise ValueError("Invalid supporting_chunk_ids returned by LLM.")
-
+        raise TypeError("Invalid supporting_chunk_ids returned by LLM.")
     # Step 5: Validate the LLM-selected chunk IDs.
     retrieved_by_id = {
         chunk["chunk_id"]: chunk

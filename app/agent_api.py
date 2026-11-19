@@ -1,10 +1,9 @@
 
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 from langgraph.types import Command
+from pydantic import BaseModel
 
 from app.graph import agent
-
 
 # Create FastAPI application
 app = FastAPI(title="Jan Aushadhi Agent API")
@@ -75,7 +74,7 @@ def ask_agent(data: AgentInput):
             "answer": result["answer"]
         }
 
-    except Exception as error:
+    except Exception as error:  # noqa: BLE001
         raise HTTPException(
             status_code=500,
             detail=str(error)
@@ -112,7 +111,7 @@ def approve_agent(data: ApprovalInput):
             "answer": result["answer"]
         }
 
-    except Exception as error:
+    except Exception as error:  # noqa: BLE001
         raise HTTPException(
             status_code=500,
             detail=str(error)

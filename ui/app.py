@@ -1,12 +1,12 @@
 
 
-import streamlit as st
-import requests
 import csv
 import sys
-
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+
+import requests
+import streamlit as st
 
 # Get the main project folder
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -17,7 +17,6 @@ sys.path.insert(0, str(BASE_DIR))
 # Import project modules
 from app.records import load_records
 from app.tools import monthly_savings_calculator
-
 
 # Page configuration must come first
 st.set_page_config(
@@ -433,7 +432,7 @@ if question:
             "question": question
         })
 
-    except requests.exceptions.RequestException as error:
+    except requests.exceptions.RequestException:
 
         st.session_state.messages.append({
 

@@ -2,9 +2,8 @@
 import json
 from pathlib import Path
 
-from app.smart_search import search_records
 from app.services import generate_chat_answer
-
+from app.smart_search import search_records
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -118,7 +117,7 @@ def evaluate_prompt(prompt_name, system_prompt, records):
 
             print(f"{item['id']}: SUCCESS")
 
-        except Exception as error:
+        except Exception as error:  # noqa: BLE001
 
             result = {
                 "id": item["id"],
