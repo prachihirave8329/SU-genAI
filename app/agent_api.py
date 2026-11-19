@@ -1,33 +1,46 @@
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-
-from app.langgraph_agent import agent
 from langgraph.types import Command
 
+from app.graph import agent
+
+
+# Create FastAPI application
 app = FastAPI(title="Jan Aushadhi Agent API")
 
 
+# 1. User input model
 class AgentInput(BaseModel):
     question: str
     thread_id: str = "jan-aushadhi-api"
+    task: str = ""
+
+    drug_code: str | None = None
+    branded_price: float | None = None
+    branded_pack_size: int | None = None
+    tablets_per_day: float | None = None
 
 
+# 2. Approval input model
 class ApprovalInput(BaseModel):
     thread_id: str
     approved: bool
 
 
-# Store pending approval information
-pending_questions = {}
+# Store pending approvals
+pending_questions = set()
 
 
+# 3. Home route
 @app.get("/")
 def home():
-    return {"message": "Welcome to Jan Aushadhi Agent API"}
+    return {
+        "message": "Welcome to Jan Aushadhi Agent API"
+    }
 
 
-# Ask a question
+# 4. Run the LangGraph agent
 @app.post("/agent")
 def ask_agent(data: AgentInput):
 
@@ -37,32 +50,47 @@ def ask_agent(data: AgentInput):
         }
     }
 
-    result = agent.invoke(
-        {"question": data.question},
-        config
+    # Prepare input for LangGraph
+    state = data.model_dump(
+        exclude={"thread_id"},
+        exclude_none=True
     )
 
-    if "__interrupt__" in result:
+    try:
+        result = agent.invoke(state, config)
 
-        pending_questions[data.thread_id] = True
+        # Check whether human approval is required
+        if "__interrupt__" in result:
+
+            pending_questions.add(data.thread_id)
+
+            return {
+                "status": "approval_required",
+                "thread_id": data.thread_id,
+                "message": result["__interrupt__"][0].value
+            }
 
         return {
-            "status": "approval_required",
-            "message": result["__interrupt__"][0].value
+            "status": "completed",
+            "answer": result["answer"]
         }
 
-    return {
-        "status": "completed",
-        "answer": result["answer"]
-    }
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail=str(error)
+        )
 
 
-# Approve or reject a search
+# 5. Resume agent after approval
 @app.post("/agent/approval")
 def approve_agent(data: ApprovalInput):
 
     if data.thread_id not in pending_questions:
-        return {"error": "No pending approval found"}
+        raise HTTPException(
+            status_code=404,
+            detail="No pending approval found"
+        )
 
     config = {
         "configurable": {
@@ -70,14 +98,22 @@ def approve_agent(data: ApprovalInput):
         }
     }
 
-    result = agent.invoke(
-        Command(resume=data.approved),
-        config
-    )
+    try:
+        result = agent.invoke(
+            Command(resume=data.approved),
+            config
+        )
 
-    del pending_questions[data.thread_id]
+        pending_questions.remove(data.thread_id)
 
-    return {
-        "status": "completed",
-        "answer": result["answer"]
-    }
+        return {
+            "status": "completed",
+            "approved": data.approved,
+            "answer": result["answer"]
+        }
+
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail=str(error)
+        )
