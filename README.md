@@ -1,5 +1,8 @@
 # JanAushadhiFinder
 
+[![JanAushadhiFinder CI](https://github.com/prachihirave8329/SU-genAI/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/prachihirave8329/SU-genAI/actions/workflows/ci.yml)
+
+
 ## Project Card
 
 **Product:** JanAushadhiFinder is a platform concept that helps users discover nearby Jan Aushadhi Kendras and access information about affordable generic medicines.
