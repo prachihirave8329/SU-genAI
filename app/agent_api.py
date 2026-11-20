@@ -1,12 +1,12 @@
 
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, HTTPException
 from langgraph.types import Command
 from pydantic import BaseModel
 
 from app.graph import agent
 
-# Create FastAPI application
-app = FastAPI(title="Jan Aushadhi Agent API")
+# Create API router
+router = APIRouter()
 
 
 # 1. User input model
@@ -32,7 +32,7 @@ pending_questions = set()
 
 
 # 3. Home route
-@app.get("/")
+@router.get("/")
 def home():
     return {
         "message": "Welcome to Jan Aushadhi Agent API"
@@ -40,7 +40,7 @@ def home():
 
 
 # 4. Run the LangGraph agent
-@app.post("/agent")
+@router.post("/agent")
 def ask_agent(data: AgentInput):
 
     config = {
@@ -82,7 +82,7 @@ def ask_agent(data: AgentInput):
 
 
 # 5. Resume agent after approval
-@app.post("/agent/approval")
+@router.post("/agent/approval")
 def approve_agent(data: ApprovalInput):
 
     if data.thread_id not in pending_questions:

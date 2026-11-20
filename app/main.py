@@ -4,6 +4,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query
 
+from app.agent_api import router as agent_router
 from app.rag import ask_question as rag_ask_question
 from app.schema import AskRequest, ChatRequest, ChatResponse
 from app.services import generate_chat_answer
@@ -15,6 +16,7 @@ app = FastAPI(
     description="API for exploring and searching Jan Aushadhi medicines.",
     version="2.0.0"
 )
+app.include_router(agent_router)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_FILE = BASE_DIR / "data" / "records.json"

@@ -1,13 +1,29 @@
-# No external packages required
+
+# FastAPI backend
+fastapi==0.162.5
+uvicorn==0.54.0
+
+# LangGraph agent
+langgraph==1.2.23
+langgraph-checkpoint==4.3.2
+langchain-core==1.8.3
+
+# Vector database
+chromadb==1.5.9
+
+# Frontend
+streamlit==1.67.0
+
+# LLM providers
+groq==1.7.0
+google-genai==3.3.0
+
+# Data processing
+pandas==3.1.1
+scikit-learn==1.9.1
+
+# Utilities
 requests==2.32.3
-    
-fastapi
-uvicorn
-pandas
-scikit-learn
-groq
-google-genai
-python-dotenv
-beautifulsoup4
-pypdf
-chromadb
+python-dotenv==1.2.4
+beautifulsoup4==4.15.0
+pypdf==7.1.0

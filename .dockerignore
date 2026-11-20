@@ -1,0 +1,21 @@
+
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.git/
+.github/
+.env
+.vscode/
+# Python cache
+*.pyo
+
+# IDE and OS files
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp

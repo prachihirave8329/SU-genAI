@@ -154,3 +154,72 @@ Smaller chunks and a higher retrieval count provided more relevant context for a
 Results are saved in:
 
 `eval/rag_eval_results.json`
+
+## Run with Docker
+
+### Prerequisites
+
+- Docker Desktop installed and running.
+- Docker Compose available.
+- A valid `.env` file containing the API credentials required by the application.
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/prachihirave8329/SU-genAI.git
+cd SU-genAI
+```
+
+### 2. Configure environment variables
+
+Create a `.env` file in the project root.
+
+Add the required environment variables used by the application.
+Do not commit your `.env` file or expose API keys publicly.
+
+### 3. Build and start the application
+
+Run:
+
+```bash
+docker compose up -d --build
+```
+
+This command builds and starts:
+
+- **FastAPI backend:** Handles API requests and the AI agent.
+- **Streamlit frontend:** Provides the user interface.
+- **ChromaDB volume:** Persists vector database data across container restarts.
+
+### 4. Verify running containers
+
+```bash
+docker compose ps
+```
+
+### 5. Access the application
+
+- Streamlit UI: http://localhost:8501
+- FastAPI Swagger documentation: http://localhost:8000/docs
+
+### 6. View application logs
+
+```bash
+docker compose logs -f
+```
+
+### 7. Stop the application
+
+```bash
+docker compose down
+```
+
+The named ChromaDB volume is preserved when using `docker compose down`.
+
+To remove containers, networks, and the persistent database volume:
+
+```bash
+docker compose down -v
+```
+
+**Warning:** The `-v` option deletes the persistent ChromaDB volume and its stored data.
