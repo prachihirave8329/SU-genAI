@@ -1,5 +1,6 @@
 
 import json
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query
@@ -9,13 +10,37 @@ from app.rag import ask_question as rag_ask_question
 from app.schema import AskRequest, ChatRequest, ChatResponse
 from app.services import generate_chat_answer
 from app.smart_search import search_records
-from app.vectorstore import semantic_search
+from app.vectorstore import (
+    get_collection,
+    index_chunks,
+    semantic_search,
+)
+
+
+# Initialize ChromaDB when the API starts
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    collection = get_collection()
+
+    if collection.count() == 0:
+        print("ChromaDB is empty. Starting document indexing...")
+        index_chunks()
+        print("ChromaDB indexing completed successfully!")
+    else:
+        print(
+            f"ChromaDB already contains {collection.count()} chunks."
+        )
+
+    yield
+
 
 app = FastAPI(
     title="JanAushadhiFinder API",
     description="API for exploring and searching Jan Aushadhi medicines.",
-    version="2.0.0"
+    version="2.0.0",
+    lifespan=lifespan,
 )
+
 app.include_router(agent_router)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,7 +57,7 @@ def home():
     return {
         "message": "Welcome to JanAushadhiFinder API!",
         "docs": "/docs",
-        "health": "/health"
+        "health": "/health",
     }
 
 
@@ -40,7 +65,7 @@ def home():
 def health_check():
     return {
         "status": "healthy",
-        "message": "JanAushadhiFinder API is running!"
+        "message": "JanAushadhiFinder API is running!",
     }
 
 
@@ -64,7 +89,7 @@ def get_record_by_id(id: str):
 
     raise HTTPException(
         status_code=404,
-        detail="Medicine record not found"
+        detail="Medicine record not found",
     )
 
 
@@ -76,7 +101,7 @@ def search_medicines(q: str = Query(..., min_length=1)):
     return {
         "query": q,
         "total_results": len(results),
-        "results": results
+        "results": results,
     }
 
 
@@ -99,13 +124,13 @@ def semantic_search_api(q: str = Query(..., min_length=1)):
                 "source": metadatas[i]["source"],
                 "page": metadatas[i]["page"],
                 "title": metadatas[i]["title"],
-                "distance": distances[i]
+                "distance": distances[i],
             })
 
         return {
             "query": q,
             "total_results": len(search_results),
-            "results": search_results
+            "results": search_results,
         }
 
     except Exception as error:  # noqa: BLE001
@@ -113,7 +138,7 @@ def semantic_search_api(q: str = Query(..., min_length=1)):
 
         raise HTTPException(
             status_code=500,
-            detail="Semantic search failed."
+            detail="Semantic search failed.",
         )
 
 
@@ -132,7 +157,7 @@ def ask_question(request: ChatRequest):
             if results
             else "No matching records found."
         ),
-        "disclaimer": "This is a dataset search, not medical advice."
+        "disclaimer": "This is a dataset search, not medical advice.",
     }
 
 
@@ -144,7 +169,7 @@ def chat(request: ChatRequest):
         if request.task == "medicine":
             matching_records = search_records(
                 request.question,
-                records
+                records,
             )
             context_records = matching_records[:3]
 
@@ -154,13 +179,13 @@ def chat(request: ChatRequest):
         else:
             raise HTTPException(
                 status_code=400,
-                detail="Task must be medicine or general"
+                detail="Task must be medicine or general",
             )
 
         result = generate_chat_answer(
             question=request.question,
             records=context_records,
-            task=request.task
+            task=request.task,
         )
 
         return result
@@ -171,7 +196,7 @@ def chat(request: ChatRequest):
     except ValueError as error:
         raise HTTPException(
             status_code=502,
-            detail=str(error)
+            detail=str(error),
         )
 
     except Exception as error:  # noqa: BLE001
@@ -181,7 +206,7 @@ def chat(request: ChatRequest):
 
         raise HTTPException(
             status_code=502,
-            detail="LLM provider request failed. Check server terminal."
+            detail="LLM provider request failed. Check server terminal.",
         )
 
 
@@ -191,16 +216,19 @@ def ask_rag(request: AskRequest):
         result = rag_ask_question(
             request.question,
             top_k=5,
-            collection_name="jan_aushadhi_config_b"
+            collection_name="jan_aushadhi_config_b",
         )
         return result
 
     except ValueError as error:
-        raise HTTPException(status_code=502, detail=str(error))
+        raise HTTPException(
+            status_code=502,
+            detail=str(error),
+        )
 
     except Exception as error:  # noqa: BLE001
         print(f"RAG ERROR: {type(error).__name__}: {error}")
         raise HTTPException(
             status_code=502,
-            detail="RAG question processing failed."
+            detail="RAG question processing failed.",
         )
