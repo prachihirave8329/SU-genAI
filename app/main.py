@@ -1,5 +1,6 @@
 
 import json
+import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -16,22 +17,44 @@ from app.vectorstore import (
     semantic_search,
 )
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+if not logger.handlers:
+    logger.addHandler(logging.StreamHandler())
+
+logger.propagate = False
 
 # Initialize ChromaDB when the API starts
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    from app.chunking import RAW_DIR, chunk_documents, load_documents
+
+    logger.info("========== DOCUMENT INDEXING DIAGNOSTICS ==========")
+    logger.info("Raw data directory: %s", RAW_DIR)
+    logger.info("Raw directory exists: %s", RAW_DIR.exists())
+    logger.info("Raw files: %s", list(RAW_DIR.glob("*")))
+
+    documents = load_documents()
+    logger.info("Documents loaded: %s", len(documents))
+
+    chunks = chunk_documents()
+    logger.info("Chunks generated: %s", len(chunks))
+
     collection = get_collection()
+    logger.info("Existing ChromaDB chunks: %s", collection.count())
 
     if collection.count() == 0:
-        print("ChromaDB is empty. Starting document indexing...")
+        logger.info("Starting document indexing...")
         index_chunks()
-        print("ChromaDB indexing completed successfully!")
+        logger.info("Indexed chunks: %s", collection.count())
     else:
-        print(
-            f"ChromaDB already contains {collection.count()} chunks."
-        )
+        logger.info("ChromaDB already contains %s chunks.", collection.count())
+
+    logger.info("========== INDEXING DIAGNOSTICS COMPLETE ==========")
 
     yield
+
 
 
 app = FastAPI(
@@ -118,12 +141,14 @@ def semantic_search_api(q: str = Query(..., min_length=1)):
         search_results = []
 
         for i in range(len(ids)):
+            metadata = metadatas[i] or {}
+
             search_results.append({
                 "id": ids[i],
                 "text": documents[i],
-                "source": metadatas[i]["source"],
-                "page": metadatas[i]["page"],
-                "title": metadatas[i]["title"],
+                "source": metadata.get("source", "Unknown"),
+                "page": metadata.get("page"),
+                "title": metadata.get("title", "Untitled"),
                 "distance": distances[i],
             })
 
@@ -133,13 +158,16 @@ def semantic_search_api(q: str = Query(..., min_length=1)):
             "results": search_results,
         }
 
-    except Exception as error:  # noqa: BLE001
-        print(f"SEMANTIC SEARCH ERROR: {error}")
+    except Exception as error:
+        logger.exception("SEMANTIC SEARCH ERROR")
 
         raise HTTPException(
             status_code=500,
-            detail="Semantic search failed.",
-        )
+            detail=(
+                "Semantic search failed: "
+                f"{type(error).__name__}: {error}"
+            ),
+        ) from error
 
 
 @app.post("/questions")
@@ -197,17 +225,15 @@ def chat(request: ChatRequest):
         raise HTTPException(
             status_code=502,
             detail=str(error),
-        )
+        ) from error
 
-    except Exception as error:  # noqa: BLE001
-        print(
-            f"LLM ERROR: {type(error).__name__}: {error}"
-        )
+    except Exception as error:
+        logger.exception("LLM ERROR")
 
         raise HTTPException(
             status_code=502,
             detail="LLM provider request failed. Check server terminal.",
-        )
+        ) from error
 
 
 @app.post("/ask")
@@ -224,11 +250,12 @@ def ask_rag(request: AskRequest):
         raise HTTPException(
             status_code=502,
             detail=str(error),
-        )
+        ) from error
 
-    except Exception as error:  # noqa: BLE001
-        print(f"RAG ERROR: {type(error).__name__}: {error}")
+    except Exception as error:
+        logger.exception("RAG ERROR")
+
         raise HTTPException(
             status_code=502,
             detail="RAG question processing failed.",
-        )
+        ) from error
