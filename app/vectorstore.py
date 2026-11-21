@@ -1,4 +1,5 @@
 
+import gc
 from pathlib import Path
 
 import chromadb
@@ -13,6 +14,9 @@ DB_DIR = BASE_DIR / "data" / "chroma_db"
 
 # Existing production collection
 COLLECTION_NAME = "jan_aushadhi_docs"
+
+# Small batch size for low-memory deployment
+BATCH_SIZE = 16
 
 
 def get_client():
@@ -42,7 +46,7 @@ def index_chunks(
     overlap=50,
     collection_name=COLLECTION_NAME
 ):
-    """Store document chunks using the selected configuration."""
+    """Store document chunks in small batches to reduce memory usage."""
 
     chunks = chunk_documents(
         chunk_size=chunk_size,
@@ -51,23 +55,56 @@ def index_chunks(
 
     collection = get_collection(collection_name)
 
-    ids = [f"chunk_{i}" for i in range(len(chunks))]
-    documents = [chunk["text"] for chunk in chunks]
+    total_chunks = len(chunks)
 
-    metadatas = [
-        {
-            "source": chunk["source"],
-            "page": chunk["page"],
-            "title": chunk["title"]
-        }
-        for chunk in chunks
-    ]
+    print(f"Starting indexing of {total_chunks} chunks...")
+    print(f"Batch size: {BATCH_SIZE}")
 
-    collection.upsert(
-        ids=ids,
-        documents=documents,
-        metadatas=metadatas
-    )
+    for start in range(0, total_chunks, BATCH_SIZE):
+
+        batch = chunks[start:start + BATCH_SIZE]
+
+        ids = [
+            f"chunk_{i}"
+            for i in range(start, start + len(batch))
+        ]
+
+        documents = [
+            chunk["text"]
+            for chunk in batch
+        ]
+
+        metadatas = [
+            {
+                "source": chunk["source"],
+                "page": chunk["page"],
+                "title": chunk["title"]
+            }
+            for chunk in batch
+        ]
+
+        collection.upsert(
+            ids=ids,
+            documents=documents,
+            metadatas=metadatas
+        )
+
+        print(
+            f"Indexed "
+            f"{min(start + len(batch), total_chunks)}"
+            f"/{total_chunks} chunks"
+        )
+
+        # Release temporary batch data
+        del batch
+        del ids
+        del documents
+        del metadatas
+
+        gc.collect()
+
+    del chunks
+    gc.collect()
 
     print("Indexing completed!")
     print("Collection:", collection_name)
@@ -76,19 +113,21 @@ def index_chunks(
     return collection
 
 
-
-def semantic_search(query, n_results=5, collection_name=COLLECTION_NAME):
+def semantic_search(
+    query,
+    n_results=5,
+    collection_name=COLLECTION_NAME
+):
+    """Search indexed documents using semantic similarity."""
 
     collection = get_collection(collection_name)
 
-    # Search using the user's question
     results = collection.query(
         query_texts=[query],
         n_results=n_results
     )
 
     return results
-
 
 
 if __name__ == "__main__":
@@ -101,7 +140,10 @@ if __name__ == "__main__":
         "What is the objective of Jan Aushadhi?"
     )
 
-    for i, document in enumerate(results["documents"][0], start=1):
+    for i, document in enumerate(
+        results["documents"][0],
+        start=1
+    ):
 
         metadata = results["metadatas"][0][i - 1]
 

@@ -1,4 +1,5 @@
 
+import gc
 import json
 import logging
 from contextlib import asynccontextmanager
@@ -19,13 +20,14 @@ from app.vectorstore import (
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
 if not logger.handlers:
     logger.addHandler(logging.StreamHandler())
 
 logger.propagate = False
 
-# Initialize ChromaDB when the API starts
 
+# Initialize ChromaDB when the API starts
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     from app.chunking import RAW_DIR, chunk_documents, load_documents
@@ -41,20 +43,30 @@ async def lifespan(app: FastAPI):
     chunks = chunk_documents()
     logger.info("Chunks generated: %s", len(chunks))
 
+    # Release diagnostic data before indexing.
+    del documents
+    del chunks
+
+    gc.collect()
+
     collection = get_collection()
     logger.info("Existing ChromaDB chunks: %s", collection.count())
 
     if collection.count() == 0:
         logger.info("Starting document indexing...")
+
         index_chunks()
+
         logger.info("Indexed chunks: %s", collection.count())
     else:
-        logger.info("ChromaDB already contains %s chunks.", collection.count())
+        logger.info(
+            "ChromaDB already contains %s chunks.",
+            collection.count(),
+        )
 
     logger.info("========== INDEXING DIAGNOSTICS COMPLETE ==========")
 
     yield
-
 
 
 app = FastAPI(
@@ -227,13 +239,13 @@ def chat(request: ChatRequest):
             detail=str(error),
         ) from error
 
-    except Exception as error:
+    except Exception:
         logger.exception("LLM ERROR")
 
         raise HTTPException(
             status_code=502,
             detail="LLM provider request failed. Check server terminal.",
-        ) from error
+        )
 
 
 @app.post("/ask")
@@ -252,10 +264,10 @@ def ask_rag(request: AskRequest):
             detail=str(error),
         ) from error
 
-    except Exception as error:
+    except Exception:
         logger.exception("RAG ERROR")
 
         raise HTTPException(
             status_code=502,
             detail="RAG question processing failed.",
-        ) from error
+        )
