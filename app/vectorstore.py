@@ -18,6 +18,31 @@ COLLECTION_NAME = "jan_aushadhi_docs"
 # Small batch size for low-memory deployment
 BATCH_SIZE = 16
 
+# Targeted query expansions for general scheme questions
+QUERY_EXPANSIONS = {
+    "what is jan aushadhi": (
+        "What is Pradhan Mantri Bhartiya Janaushadhi "
+        "Pariyojana (PMBJP) and what is its purpose?"
+    ),
+    "what is the objective of jan aushadhi": (
+        "What is the objective and purpose of Pradhan "
+        "Mantri Bhartiya Janaushadhi Pariyojana (PMBJP)?"
+    ),
+    "what is the purpose of jan aushadhi": (
+        "What is Pradhan Mantri Bhartiya Janaushadhi "
+        "Pariyojana (PMBJP) and what is its purpose?"
+    ),
+}
+
+def expand_query(query):
+    """Expand common general questions using official scheme terminology."""
+
+    normalized_query = " ".join(
+        query.lower().strip(" ?.!").split()
+    )
+
+    return QUERY_EXPANSIONS.get(normalized_query, query)
+
 
 def get_client():
     """Create a persistent ChromaDB client."""
@@ -95,7 +120,6 @@ def index_chunks(
             f"/{total_chunks} chunks"
         )
 
-        # Release temporary batch data
         del batch
         del ids
         del documents
@@ -122,9 +146,11 @@ def semantic_search(
 
     collection = get_collection(collection_name)
 
+    expanded_query = expand_query(query)
+
     results = collection.query(
-        query_texts=[query],
-        n_results=n_results
+        query_texts=[expanded_query],
+        n_results=min(n_results, collection.count())
     )
 
     return results
@@ -132,7 +158,17 @@ def semantic_search(
 
 if __name__ == "__main__":
 
-    index_chunks()
+    print("Testing query expansion...")
+
+    test_queries = [
+        "What is Jan Aushadhi?",
+        "What is PMBJP?",
+        "Find Paracetamol products"
+    ]
+
+    for query in test_queries:
+        print("\nOriginal query:", query)
+        print("Expanded query:", expand_query(query))
 
     print("\nTesting semantic search...")
 
