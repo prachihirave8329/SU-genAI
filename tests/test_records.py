@@ -68,6 +68,46 @@ def test_smart_search_empty_query():
     assert results == []
 
 
+def test_smart_search_exact_medicine_name():
+    records = load_records()
+
+    results = search_records("Metformin", records)
+
+    assert len(results) >= 2
+    assert all(
+        item["generic_name"] == "Metformin"
+        for item in results
+    )
+
+
+def test_smart_search_exact_strength():
+    records = load_records()
+
+    results = search_records("Metformin 500 mg", records)
+
+    assert len(results) > 0
+    assert results[0]["generic_name"] == "Metformin"
+    assert results[0]["strength"] == "500 mg"
+
+
+def test_smart_search_different_strength():
+    records = load_records()
+
+    results = search_records("Metformin 1000 mg", records)
+
+    assert len(results) > 0
+    assert results[0]["generic_name"] == "Metformin"
+    assert results[0]["strength"] == "1000 mg"
+
+
+def test_smart_search_unknown_medicine():
+    records = load_records()
+
+    results = search_records("UnknownMedicine", records)
+
+    assert results == []
+
+
 def test_savings_calculator():
     result = monthly_savings_calculator(
         "SAMPLE001",
@@ -100,3 +140,13 @@ def test_savings_invalid_price():
     )
 
     assert result == {"error": "Enter valid positive values"}
+def test_smart_search_excludes_unrelated_medicines():
+    records = load_records()
+
+    results = search_records("Metformin 500 mg", records)
+
+    assert len(results) > 0
+    assert all(
+        item["generic_name"] == "Metformin"
+        for item in results
+    )
