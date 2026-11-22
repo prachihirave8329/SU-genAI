@@ -1,5 +1,5 @@
 
-import gc
+import asyncio
 import json
 import logging
 from contextlib import asynccontextmanager
@@ -27,47 +27,95 @@ if not logger.handlers:
 logger.propagate = False
 
 
-# Initialize ChromaDB when the API starts
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    from app.chunking import RAW_DIR, chunk_documents, load_documents
+# --------------------------------------------------
+# Document indexing - background initialization
+# --------------------------------------------------
 
-    logger.info("========== DOCUMENT INDEXING DIAGNOSTICS ==========")
-    logger.info("Raw data directory: %s", RAW_DIR)
-    logger.info("Raw directory exists: %s", RAW_DIR.exists())
-    logger.info("Raw files: %s", list(RAW_DIR.glob("*")))
-
-    documents = load_documents()
-    logger.info("Documents loaded: %s", len(documents))
-
-    chunks = chunk_documents()
-    logger.info("Chunks generated: %s", len(chunks))
-
-    # Release diagnostic data before indexing.
-    del documents
-    del chunks
-
-    gc.collect()
+def initialize_vectorstore_sync():
+    """Initialize ChromaDB and index documents if necessary."""
 
     collection = get_collection()
-    logger.info("Existing ChromaDB chunks: %s", collection.count())
 
-    if collection.count() == 0:
-        logger.info("Starting document indexing...")
+    existing_count = collection.count()
 
-        index_chunks()
+    logger.info(
+        "Existing ChromaDB chunks: %s",
+        existing_count,
+    )
 
-        logger.info("Indexed chunks: %s", collection.count())
-    else:
-        logger.info(
-            "ChromaDB already contains %s chunks.",
-            collection.count(),
+    if existing_count == 0:
+        logger.info("Starting background document indexing...")
+
+        collection = index_chunks()
+
+    total_chunks = collection.count()
+
+    if total_chunks == 0:
+        raise RuntimeError(
+            "Document indexing completed without creating chunks."
         )
 
-    logger.info("========== INDEXING DIAGNOSTICS COMPLETE ==========")
+    logger.info(
+        "Document indexing completed successfully. "
+        "Total chunks: %s",
+        total_chunks,
+    )
+
+    return total_chunks
+
+
+async def initialize_vectorstore(app: FastAPI):
+    """Run document indexing without blocking API startup."""
+
+    app.state.indexing_status = "indexing"
+
+    try:
+        total_chunks = await asyncio.to_thread(
+            initialize_vectorstore_sync
+        )
+
+        app.state.indexing_status = "ready"
+
+        logger.info(
+            "Document indexing status: ready (%s chunks)",
+            total_chunks,
+        )
+
+    except Exception:
+        app.state.indexing_status = "failed"
+
+        logger.exception(
+            "Background document indexing failed."
+        )
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Start the API immediately.
+
+    Document indexing runs in a background task so that
+    Render can detect the API port without waiting for
+    ChromaDB initialization to finish.
+    """
+
+    app.state.indexing_status = "starting"
+
+    app.state.indexing_task = asyncio.create_task(
+        initialize_vectorstore(app)
+    )
+
+    logger.info(
+        "API startup complete. Document indexing is running "
+        "in the background."
+    )
 
     yield
 
+
+# --------------------------------------------------
+# FastAPI application
+# --------------------------------------------------
 
 app = FastAPI(
     title="JanAushadhiFinder API",
@@ -82,7 +130,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_FILE = BASE_DIR / "data" / "records.json"
 
 
+# --------------------------------------------------
+# Medicine records
+# --------------------------------------------------
+
 def load_records():
+    """Load medicine records from the JSON dataset."""
+
     with open(DATA_FILE, "r", encoding="utf-8") as file:
         return json.load(file)
 
@@ -96,13 +150,28 @@ def home():
     }
 
 
+# --------------------------------------------------
+# Health check
+# --------------------------------------------------
+
 @app.get("/health")
 def health_check():
+    """Check API health and document indexing status."""
+
     return {
         "status": "healthy",
         "message": "JanAushadhiFinder API is running!",
+        "document_index_status": getattr(
+            app.state,
+            "indexing_status",
+            "starting",
+        ),
     }
 
+
+# --------------------------------------------------
+# Medicine record endpoints
+# --------------------------------------------------
 
 @app.get("/records")
 def get_records(limit: int | None = Query(default=None, ge=1)):
@@ -128,6 +197,10 @@ def get_record_by_id(id: str):
     )
 
 
+# --------------------------------------------------
+# Medicine search
+# --------------------------------------------------
+
 @app.get("/search")
 def search_medicines(q: str = Query(..., min_length=1)):
     records = load_records()
@@ -140,8 +213,29 @@ def search_medicines(q: str = Query(..., min_length=1)):
     }
 
 
+# --------------------------------------------------
+# Semantic document search
+# --------------------------------------------------
+
 @app.get("/search/semantic")
 def semantic_search_api(q: str = Query(..., min_length=1)):
+
+    # Do not search ChromaDB before indexing is complete.
+    indexing_status = getattr(
+        app.state,
+        "indexing_status",
+        "starting",
+    )
+
+    if indexing_status != "ready":
+        raise HTTPException(
+            status_code=503,
+            detail=(
+                "Document indexing is not ready. "
+                "Please retry later."
+            ),
+        )
+
     try:
         results = semantic_search(q, n_results=3)
 
@@ -170,6 +264,9 @@ def semantic_search_api(q: str = Query(..., min_length=1)):
             "results": search_results,
         }
 
+    except HTTPException:
+        raise
+
     except Exception as error:
         logger.exception("SEMANTIC SEARCH ERROR")
 
@@ -181,6 +278,10 @@ def semantic_search_api(q: str = Query(..., min_length=1)):
             ),
         ) from error
 
+
+# --------------------------------------------------
+# Question-based medicine search
+# --------------------------------------------------
 
 @app.post("/questions")
 def ask_question(request: ChatRequest):
@@ -200,6 +301,10 @@ def ask_question(request: ChatRequest):
         "disclaimer": "This is a dataset search, not medical advice.",
     }
 
+
+# --------------------------------------------------
+# Chat endpoint
+# --------------------------------------------------
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
@@ -248,6 +353,10 @@ def chat(request: ChatRequest):
         )
 
 
+# --------------------------------------------------
+# RAG endpoint
+# --------------------------------------------------
+
 @app.post("/ask")
 def ask_rag(request: AskRequest):
     try:
@@ -256,6 +365,7 @@ def ask_rag(request: AskRequest):
             top_k=5,
             collection_name="jan_aushadhi_config_b",
         )
+
         return result
 
     except ValueError as error:
