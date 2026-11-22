@@ -1,0 +1,44 @@
+[
+  {
+    "id": "faq_purpose",
+    "query": "What is the purpose of PMBJP?",
+    "expected_source": "faq.html",
+    "expected_terms": [
+      "Pradhan Mantri Bhartiya Janaushadhi Pariyojana",
+      "generic medicines"
+    ]
+  },
+  {
+    "id": "faq_hours",
+    "query": "What are the working hours of Janaushadhi Kendras?",
+    "expected_source": "faq.html",
+    "expected_terms": [
+      "8 AM to 8 PM"
+    ]
+  },
+  {
+    "id": "faq_procurement",
+    "query": "How are medicines procured and quality tested?",
+    "expected_source": "faq.html",
+    "expected_terms": [
+      "open tender",
+      "NABL"
+    ]
+  },
+  {
+    "id": "product_paracetamol",
+    "query": "Find Paracetamol medicines",
+    "expected_source": "product_list.pdf",
+    "expected_terms": [
+      "Paracetamol"
+    ]
+  },
+  {
+    "id": "product_metformin",
+    "query": "Find Metformin Hydrochloride products",
+    "expected_source": "product_list.pdf",
+    "expected_terms": [
+      "Metformin Hydrochloride"
+    ]
+  }
+]

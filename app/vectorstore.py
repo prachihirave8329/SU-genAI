@@ -32,8 +32,17 @@ QUERY_EXPANSIONS = {
         "What is Pradhan Mantri Bhartiya Janaushadhi "
         "Pariyojana (PMBJP) and what is its purpose?"
     ),
+    "what is the purpose of pmbjp": (
+        "What is Pradhan Mantri Bhartiya Janaushadhi "
+        "Pariyojana (PMBJP)? It provides quality generic "
+        "medicines at affordable prices."
+    ),
+    "how are medicines procured and quality tested": (
+        "Medicines are procured through open tender from "
+        "manufacturers. Each batch is tested at empanelled "
+        "NABL accredited laboratories for quality."
+    ),
 }
-
 def expand_query(query):
     """Expand common general questions using official scheme terminology."""
 
