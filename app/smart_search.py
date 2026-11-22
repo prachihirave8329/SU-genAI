@@ -1,8 +1,19 @@
-
 import re
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+
+NAME_STOP_WORDS = {
+    "mg", "mcg", "ug", "gm", "kg", "ml", "iu", "units", "unit",
+    "tablet", "tablets", "capsule", "capsules", "injection",
+    "injections", "syrup", "suspension", "solution", "cream",
+    "ointment", "gel", "drops", "powder", "granules",
+    "ip", "bp", "usp", "and", "with", "for", "the",
+    "what", "is", "are", "of", "a", "an", "find", "search",
+    "show", "list", "medicine", "medicines", "product", "products",
+    "available", "prolonged", "release", "extended", "delayed",
+    "sustained", "enteric", "coated", "dispersible",
+}
 
 
 def normalize_text(text):
@@ -10,14 +21,34 @@ def normalize_text(text):
     return re.sub(r"\s+", " ", str(text).lower()).strip()
 
 
+def medicine_name_tokens(text):
+    """Extract meaningful medicine-name words, excluding dosage terms."""
+    words = re.findall(r"[a-z]+", normalize_text(text))
+
+    return {
+        word
+        for word in words
+        if word not in NAME_STOP_WORDS and len(word) > 1
+    }
+
+
 def search_records(query, records):
-    """Search medicines using weighted name, strength and TF-IDF matching."""
+    """Search medicines using ingredient matching and strength ranking."""
 
     if not query or not query.strip() or not records:
         return []
 
     normalized_query = normalize_text(query)
-    query_tokens = set(normalized_query.split())
+
+    query_name_tokens = medicine_name_tokens(normalized_query)
+
+    # A dosage-only query should not return arbitrary medicines.
+    if not query_name_tokens:
+        return []
+
+    query_strengths = set(
+        re.findall(r"\d+(?:\.\d+)?", normalized_query)
+    )
 
     documents = []
 
@@ -42,31 +73,38 @@ def search_records(query, records):
     results = []
 
     for index, record in enumerate(records):
-        generic_name = normalize_text(record["generic_name"])
-        strength = normalize_text(record["strength"])
-
-        name_match = generic_name in normalized_query
-        query_name_match = normalized_query.startswith(generic_name)
-
-        name_tokens = set(generic_name.split())
-        name_token_match = bool(name_tokens & query_tokens)
-
-        strength_match = bool(
-            set(strength.split()) & query_tokens
+        medicine_tokens = medicine_name_tokens(
+            record["generic_name"]
         )
 
-        # Require a medicine-name match to avoid unrelated results.
-        if not name_match and not name_token_match:
+        matching_tokens = query_name_tokens & medicine_tokens
+
+        # Require at least one meaningful ingredient match.
+        if not matching_tokens:
             continue
+
+        record_strengths = set(
+            re.findall(
+                r"\d+(?:\.\d+)?",
+                normalize_text(record["strength"])
+            )
+        )
+
+        strength_match = bool(
+            query_strengths & record_strengths
+        )
 
         similarity = float(scores[index])
 
-        # Combine semantic similarity with exact matching signals.
-        final_score = similarity
+        # Reward meaningful ingredient matches.
+        name_coverage = (
+            len(matching_tokens) / len(query_name_tokens)
+        )
 
-        if name_match:
-            final_score += 1.0
-        elif query_name_match or name_token_match:
+        final_score = similarity + name_coverage
+
+        # Give an additional bonus when all query-name tokens match.
+        if query_name_tokens.issubset(medicine_tokens):
             final_score += 0.5
 
         if strength_match:
