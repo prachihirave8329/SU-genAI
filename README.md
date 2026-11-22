@@ -226,3 +226,31 @@ docker compose down -v
 ```
 
 **Warning:** The `-v` option deletes the persistent ChromaDB volume and its stored data.
+
+---
+
+## Live Deployment
+
+JanAushadhiFinder is deployed on Render.
+
+| Component | Live URL |
+|---|---|
+| Frontend UI | https://jan-aushadhi-ui.onrender.com |
+| Backend API | https://jan-aushadhi-api-1sk5.onrender.com |
+| API Health Check | https://jan-aushadhi-api-1sk5.onrender.com/health |
+
+### Health Check
+
+The API provides a public `/health` endpoint to verify service availability.
+
+Test the endpoint using:
+
+```powershell
+curl.exe https://jan-aushadhi-api-1sk5.onrender.com/health
+```
+
+### Deployment Platform
+
+- **Frontend:** Render
+- **Backend:** Render
+- **Containerization:** Docker
