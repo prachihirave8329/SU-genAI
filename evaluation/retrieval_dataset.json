@@ -1,3 +1,4 @@
+
 [
   {
     "id": "faq_purpose",
@@ -12,33 +13,102 @@
     "id": "faq_hours",
     "query": "What are the working hours of Janaushadhi Kendras?",
     "expected_source": "faq.html",
-    "expected_terms": [
-      "8 AM to 8 PM"
-    ]
+    "expected_terms": ["8 AM to 8 PM"]
   },
   {
     "id": "faq_procurement",
     "query": "How are medicines procured and quality tested?",
     "expected_source": "faq.html",
-    "expected_terms": [
-      "open tender",
-      "NABL"
-    ]
+    "expected_terms": ["open tender", "NABL"]
+  },
+  {
+    "id": "faq_generic_definition",
+    "query": "What is a generic medicine?",
+    "expected_source": "faq.html",
+    "expected_terms": ["non-proprietary", "brand name"]
+  },
+  {
+    "id": "faq_pmbi",
+    "query": "What does PMBI stand for?",
+    "expected_source": "faq.html",
+    "expected_terms": ["Pharmaceuticals & Medical Devices Bureau of India"]
+  },
+  {
+    "id": "faq_generic_effectiveness",
+    "query": "Are generic medicines as effective as branded medicines?",
+    "expected_source": "faq.html",
+    "expected_terms": ["same efficacy and therapeutic value"]
+  },
+  {
+    "id": "faq_patient_benefits",
+    "query": "How do generic medicines benefit patients?",
+    "expected_source": "faq.html",
+    "expected_terms": ["reduce", "expenditure on medicines"]
+  },
+  {
+    "id": "faq_kendra_count",
+    "query": "How many Janaushadhi Kendras are currently functional?",
+    "expected_source": "faq.html",
+    "expected_terms": ["more than 13000", "currently functional"]
+  },
+  {
+    "id": "faq_eligibility",
+    "query": "Who can open a Janaushadhi Kendra?",
+    "expected_source": "faq.html",
+    "expected_terms": ["Individual entrepreneur", "Government Nominated Agency"]
+  },
+  {
+    "id": "faq_incentives",
+    "query": "What incentives are available to Janaushadhi Kendra owners?",
+    "expected_source": "faq.html",
+    "expected_terms": ["20% margin on MRP", "Rs. 2.00 lakhs"]
   },
   {
     "id": "product_paracetamol",
     "query": "Find Paracetamol medicines",
     "expected_source": "product_list.pdf",
-    "expected_terms": [
-      "Paracetamol"
-    ]
+    "expected_terms": ["Paracetamol"]
   },
   {
     "id": "product_metformin",
     "query": "Find Metformin Hydrochloride products",
     "expected_source": "product_list.pdf",
-    "expected_terms": [
-      "Metformin Hydrochloride"
-    ]
+    "expected_terms": ["Metformin Hydrochloride"]
+  },
+  {
+    "id": "product_azithromycin",
+    "query": "Find Azithromycin tablets",
+    "expected_source": "product_list.pdf",
+    "expected_terms": ["Azithromycin Tablets IP 250 mg"]
+  },
+  {
+    "id": "product_amlodipine",
+    "query": "Find Amlodipine tablets",
+    "expected_source": "product_list.pdf",
+    "expected_terms": ["Amlodipine Tablets IP 5mg"]
+  },
+  {
+    "id": "product_atorvastatin",
+    "query": "Find Atorvastatin tablets",
+    "expected_source": "product_list.pdf",
+    "expected_terms": ["Atorvastatin Tablets IP 10mg"]
+  },
+  {
+    "id": "product_cetirizine",
+    "query": "Find Cetirizine syrup",
+    "expected_source": "product_list.pdf",
+    "expected_terms": ["Cetirizine Syrup IP 5 mg per 5 ml"]
+  },
+  {
+    "id": "product_omeprazole",
+    "query": "Find Omeprazole capsules",
+    "expected_source": "product_list.pdf",
+    "expected_terms": ["Omeprazole Gastro- resistant Capsules IP 20 mg"]
+  },
+  {
+    "id": "product_combination",
+    "query": "Find Metformin and Glimepiride combination tablets",
+    "expected_source": "product_list.pdf",
+    "expected_terms": ["Metformin Hydrochloride Prolonged-release 500mg and Glimepiride 2mg"]
   }
 ]

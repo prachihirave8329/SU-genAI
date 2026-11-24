@@ -2,6 +2,7 @@
 import asyncio
 import json
 import logging
+import time
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -123,6 +124,30 @@ app = FastAPI(
     version="2.0.0",
     lifespan=lifespan,
 )
+@app.middleware("http")
+async def log_api_latency(request, call_next):
+
+    start_time = time.perf_counter()
+    status_code = 500
+
+    try:
+        response = await call_next(request)
+        status_code = response.status_code
+        return response
+
+    finally:
+        latency_ms = (
+            time.perf_counter() - start_time
+        ) * 1000
+
+        logger.info(
+            "api_request method=%s path=%s "
+            "status_code=%s latency_ms=%.2f",
+            request.method,
+            request.url.path,
+            status_code,
+            latency_ms,
+        )
 
 app.include_router(agent_router)
 

@@ -211,8 +211,7 @@ def load_documents():
 
     html_files = [
         "about_pmbi.html",
-        "faq.html",
-        "product_list.html"
+        "faq.html"
     ]
 
     for filename in html_files:

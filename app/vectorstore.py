@@ -1,5 +1,6 @@
 
 import gc
+import re
 from pathlib import Path
 
 import chromadb
@@ -17,6 +18,7 @@ COLLECTION_NAME = "jan_aushadhi_docs"
 
 # Small batch size for low-memory deployment
 BATCH_SIZE = 16
+
 
 # Targeted query expansions for general scheme questions
 QUERY_EXPANSIONS = {
@@ -43,6 +45,8 @@ QUERY_EXPANSIONS = {
         "NABL accredited laboratories for quality."
     ),
 }
+
+
 def expand_query(query):
     """Expand common general questions using official scheme terminology."""
 
@@ -53,8 +57,81 @@ def expand_query(query):
     return QUERY_EXPANSIONS.get(normalized_query, query)
 
 
+def _product_match_score(query, document):
+    """Score a product document based on medicine name and form."""
+
+    query_lower = query.lower()
+    document_lower = document.lower()
+
+    query_tokens = re.findall(r"[a-z0-9]+", query_lower)
+
+    document_tokens = set(
+        re.findall(r"[a-z0-9]+", document_lower)
+    )
+
+    stop_words = {
+        "find", "search", "show", "list", "me",
+        "the", "a", "an", "and", "or", "for",
+        "product", "products", "medicine", "medicines"
+    }
+
+    medicine_terms = [
+        token for token in query_tokens
+        if token not in stop_words
+        and not token.isdigit()
+        and not re.fullmatch(r"\d+(mg|ml|mcg)", token)
+    ]
+
+    if not medicine_terms:
+        return 0
+
+    # Every requested medicine ingredient must be present.
+    matched_terms = [
+        term for term in medicine_terms
+        if term in document_tokens
+    ]
+
+    if not matched_terms:
+        return 0
+
+    score = len(matched_terms) * 10
+
+    # Reward matching dosage forms.
+    dosage_forms = {
+        "tablet", "tablets", "capsule", "capsules",
+        "syrup", "suspension", "injection", "cream",
+        "ointment", "drops"
+    }
+
+    requested_forms = [
+        term for term in query_tokens
+        if term in dosage_forms
+    ]
+
+    for form in requested_forms:
+        if form in document_tokens:
+            score += 5
+
+    # Reward matching strengths.
+    strengths = re.findall(
+        r"\d+(?:\.\d+)?\s*(?:mg|mcg|g|ml)",
+        query_lower
+    )
+
+    for strength in strengths:
+        normalized = re.sub(r"\s+", "", strength)
+
+        if normalized in re.sub(
+            r"\s+", "", document_lower
+        ):
+            score += 5
+
+    return score
+
+
 def get_client():
     """Create a persistent ChromaDB client."""
+
     return chromadb.PersistentClient(path=str(DB_DIR))
 
 
